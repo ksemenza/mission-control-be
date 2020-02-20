@@ -1,6 +1,11 @@
 # Mission Control API Documentation
 
+#### Code Climate Grade
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/7830580b884fe4c0d68a/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/mission-control-be/maintainability)
+
 #### Backend delpoyed at [Coming Soon!]() <br>
+
 
 ## Getting started
 
