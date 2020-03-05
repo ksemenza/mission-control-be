@@ -7,8 +7,10 @@ const typeDefs = gql`
     products: [Product!]!
     projects: [Project!]!
     project(id: ID!): Project!
-    labels: [Label!]!
-    label(id: ID!): Label!
+    columns: [Column!]!
+    column(id: ID!): Column!
+    labels: [Label]
+    label(id: ID!): Label
     persons: [Person!]!
     person(email: String!): Person!
     roles: [Role!]!
@@ -25,9 +27,12 @@ const typeDefs = gql`
     createProgram(name: String!): Program!
     createProduct(name: String!, id: ID!): Product!
     createProject(name: String!, id: ID!): Project!
-    createLabel(name: String!, color: String!): Label!
+    createLabel(name: String!, color: String!, id: ID!): Label!
+    createColumn(name: String!, id: ID!): Column!
     updateLabel(id: ID!, name: String, color: String): Label!
     deleteLabel(id: ID!): Label!
+    updateColumn(id: ID!, name: String!): Column!
+    deleteColumn(id: ID!): Column!
     createPerson(name: String!, email: String!): Person!
     addProjectMember(id: ID!, email: String!): Person!
     createNote(
@@ -47,6 +52,8 @@ const typeDefs = gql`
       rating: Int
     ): Note!
     deleteNote(id: ID!): Note!
+    addColumnToProject(id: ID!, name: String!): Project!
+    addLabelToColumn(id: ID!, name: String!): Column!
   }
 
   type Program {
@@ -55,6 +62,7 @@ const typeDefs = gql`
     createdAt: String!
     updatedAt: String!
     products: [Product!]!
+    columns: [Column!]!
   }
 
   type Product {
@@ -64,9 +72,7 @@ const typeDefs = gql`
     createdAt: String!
     updatedAt: String!
     projects: [Project!]!
-    productStatus: [Label]
-    productHealth: Label
-    productState: Boolean
+    productActive: Boolean
     CCRepos: [CCRepo]!
     grades: [CodeClimateSnapshot!]
   }
@@ -75,16 +81,14 @@ const typeDefs = gql`
     id: ID!
     name: String!
     product: Product!
-    status: Boolean!
     projectManagers: [Person!]!
     team: [Person!]!
     notes(orderBy: NoteOrderByInput, privatePerm: Boolean): [Note]
     CCRepoIds: [String]
     createdAt: String!
     updatedAt: String!
-    projectStatus: [Label]
-    projectHealth: Label
-    projectState: Boolean
+    projectColumns: [Column!]!
+    projectActive: Boolean
   }
 
   type CCRepo {
@@ -139,6 +143,7 @@ const typeDefs = gql`
     updatedAt: String!
     name: String!
     color: String!
+    column: Column!
   }
 
   type Role {
@@ -162,6 +167,17 @@ const typeDefs = gql`
     updatedAt_ASC
     updatedAt_DESC
   }
+
+  type Column {
+    id: ID!
+    createdAt: String!
+    updatedAt: String!
+    name: String
+    labels: [Label!]!
+    program: Program!
+  }
 `;
 
 module.exports = typeDefs;
+
+// // addedTo: [Project]
