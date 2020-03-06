@@ -56,6 +56,10 @@ const typeDefs = gql`
     addLabelToColumn(id: ID!, name: String!): Column!
   }
 
+  type Subscription {
+    newLabel: Label
+  }
+
   type Program {
     id: ID!
     name: String!
