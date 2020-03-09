@@ -20,7 +20,11 @@ const typeDefs = gql`
     note(id: ID!): Note!
     CodeClimateSnapshot(slug: String!): CodeClimateSnapshot
     CCRepos: [CCRepo]!
-    CCRepo(id: ID, name: String): CCRepo!
+    CCRepo(id: ID!, name: String!): CCRepo!
+    GithubRepos(search: String!, org: String): [GHRepo!]!
+    SparkyBoy(owner: String!, name: String!): [Sparkline!]!
+    SparkyDate(owner: String!, name: String!, until: String!): [Sparkline!]!
+    GithubPulse(owner: String!, name: String!): Pulse!
   }
 
   type Mutation {
@@ -87,8 +91,19 @@ const typeDefs = gql`
     CCRepoIds: [String]
     createdAt: String!
     updatedAt: String!
-    projectColumns: [Column!]!
+    projectColumns: [Column]
     projectActive: Boolean
+  }
+
+  type Pulse {
+    id: ID!
+    issueCount: Int!
+    closedIssues: Int!
+    openIssues: Int!
+    prCount: Int!
+    closedPRs: Int!
+    openPRs: Int!
+    mergedPRs: Int!
   }
 
   type CCRepo {
@@ -96,6 +111,13 @@ const typeDefs = gql`
     name: String!
     CCId: String!
     product: Product!
+  }
+
+  type GHRepo {
+    id: ID!
+    name: String!
+    owner: String!
+    ownerId: String!
   }
 
   type Person {
@@ -144,6 +166,7 @@ const typeDefs = gql`
     name: String!
     color: String!
     column: Column!
+    selected: Boolean!
   }
 
   type Role {
@@ -151,6 +174,15 @@ const typeDefs = gql`
     name: String!
     privateNote: Boolean!
     viewProducts: Boolean!
+  }
+
+  type Sparkline {
+    oid: ID!
+    message: String!
+    additions: Int!
+    deletions: Int!
+    changedFiles: Int!
+    committedDate: String!
   }
 
   enum NoteOrderByInput {
@@ -179,5 +211,3 @@ const typeDefs = gql`
 `;
 
 module.exports = typeDefs;
-
-// // addedTo: [Project]
