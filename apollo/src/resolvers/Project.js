@@ -38,9 +38,9 @@ const notes = (parent, args, context) => {
   //  return res;
 };
 
-const projectColumns = (parent, args, context) => {
+const columns = (parent, args, context) => {
   const { id } = parent;
-  const res = context.prisma.project({ id }).projectColumns();
+  const res = context.prisma.project({ id }).columns();
 
   return res;
 };
@@ -50,5 +50,5 @@ module.exports = {
   team,
   projectManagers,
   notes,
-  projectColumns,
+  columns,
 };
