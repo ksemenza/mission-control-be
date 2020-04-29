@@ -48,7 +48,8 @@ type Project {
   active: Boolean @default(value: false)
 
   # People are assigned roles on a project, this links people to a project _through_ a role
-  assignments: [ProjectRoleAssignment!]! @relation(name: "ProjectRoleAssignmentsByProject")
+  assignments: [ProjectRoleAssignment!]!
+    @relation(name: "ProjectRoleAssignmentsByProject")
 
   # Captures project specific notes
   notes: [Note!]! @relation(name: "NotesByProject")
@@ -115,7 +116,8 @@ type GithubRepo {
 
   product: Product! @relation(name: "GitHubReposByProduct")
 
-  grade: GithubRepoGrade @relation(name: "GitHubRepoGradesByGitHubRepo", link: "INLINE")
+  grade: GithubRepoGrade
+    @relation(name: "GitHubRepoGradesByGitHubRepo", link: "INLINE")
 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -164,11 +166,12 @@ type Note {
 
 type Person {
   id: ID! @id
+  oktaID: String
   name: String!
   email: String! @unique
   avatar: String
 
-  # role: Role!
+  #role: Role!
 
   # All of the notes authored by this person
   notes: [Note!]! @relation(name: "NotesByAuthor")
@@ -177,7 +180,8 @@ type Person {
   attended: [Note!]! @relation(name: "NoteAttendee")
 
   # All of the project roles assigned to this person
-  projectRoleAssignments: [ProjectRoleAssignment!]! @relation(name: "ProjectRoleAssignmentsByPerson")
+  projectRoleAssignments: [ProjectRoleAssignment!]!
+    @relation(name: "ProjectRoleAssignmentsByPerson")
 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt

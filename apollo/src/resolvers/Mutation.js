@@ -147,6 +147,7 @@ const createProject = (parent, args, context) => {
 // NOTE: email field is @unique, for enum see type defs
 const createPerson = (parent, args, context) => {
   const { name, email } = args;
+  console.log('***LOOK HERE***', args);
   const person = context.prisma.createPerson({ name, email });
 
   return person;
