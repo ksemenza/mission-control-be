@@ -3,29 +3,167 @@
 // Queries must be defined to return fields of the same type
 // See the Query field in the type definitions for examples
 
-const programs = (parent, args, context) => {
-  return context.prisma.programs();
-};
+// /**
+//  * @param { import('../context').ApolloContext } context
+//  * @returns { import('../generated/prisma-client').ProjectNullablePromise }
+//  */
 
-const products = (parent, args, context) => {
-  const res = context.prisma.products();
-  return res;
-};
+//  /**
+//    * @param { import('../context').ApolloContext } context
+//    * @returns { import('../context').User }
+//    */
 
-const projects = (parent, args, context) => {
-  const res = context.prisma.projects();
-  return res;
-};
+//    /**
+//    * @param { import('../context').ApolloContext } context
+//    * @returns any
+//    */
 
-/**
- * @param { import('../context').ApolloContext } context
- * @returns { import('../generated/prisma-client').ProjectNullablePromise }
- */
-const project = (_, args, context) => {
-  const { where } = args;
-  const res = context.prisma.project(where);
-  return res;
-};
+//    /** @type {import("../datasources/GitHubAPI")} */
+
+const Query= {
+  programs: (parent, args, context) => {
+    return context.prisma.programs();
+  },
+  
+  projects: (parent, { filter }, ctx, info) => {
+    let where = null;
+    if (filter) {
+      where = {
+        OR: [
+          { name: filter }
+        ]
+      }
+    }
+    return ctx.db.query.projects({ where }, info)
+  },
+
+  project: (_, args, context) => {
+    const { where } = args;
+    const res = context.prisma.project(where);
+    return res;
+  },
+   codeClimateSnapshot: async (parent, args, context) => {
+    const CodeClimateConnection = context.dataSources.codeClimateAPI;
+    try {
+      const { slug } = args;
+      const res = await CodeClimateConnection.getRepobyGHSlug(slug);
+      const link = res.data[0].links.self;
+      const repoId = res.data[0].id;
+      const snapShot =
+        res.data[0].relationships.latest_default_branch_snapshot.data.id;
+      const name = res.data[0].attributes.human_name;
+  
+      let snapShotResponse = await CodeClimateConnection.getSnapshot(
+        repoId,
+        snapShot,
+      );
+      snapShotResponse = { ...snapShotResponse, name, link };
+      return snapShotResponse;
+    } catch (e) {
+      console.log(e);
+      throw new Error(e);
+    }
+  },
+  
+  githubReposForOrg: async (parent, args, context) => {
+    const { search, org } = args;
+    let name;
+    if (!org) {
+      const grams = await context.prisma.programs();
+      name = grams[0].name;
+    } else name = org;
+    const dynamicQuery = `${search} org:${name}`;
+    const GithubConnection = context.dataSources.gitHubAPI;
+    try {
+      const res = await GithubConnection.getReposByOrg(dynamicQuery);
+      return res;
+    } catch (e) {
+      console.log(e);
+      throw new Error(e);
+    }
+  },
+  
+  sparkyBoy: async (parent, args, context) => {
+    const { owner, name } = args;
+    const GithubConnection = context.dataSources.gitHubAPI;
+    try {
+      const res = await GithubConnection.getSparkline(owner, name);
+      return res;
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
+    }
+  },
+  
+  sparkyDate: async (parent, args, context) => {
+    const { owner, name, until } = args;
+    const GithubConnection = context.dataSources.gitHubAPI;
+    try {
+      const res = await GithubConnection.getSparkline(owner, name, until);
+      return res;
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
+    }
+  },
+  
+  
+    githubPulse: async (_, args, context) => {
+    context.logger.debug('Query.gitHubPulse: %O', args);
+  
+    const { owner, name } = args;
+  
+    
+    const GithubConnection = context.dataSources.gitHubAPI;
+    try {
+      return await GithubConnection.getPulse(owner, name);
+    } catch (error) {
+      context.logger.error(
+        'Error executing GithubConnection.getPulse\n%O',
+        error,
+      );
+      throw new Error(error);
+    }
+  },
+  
+  githubRepos: (parent, args, context) => {
+    const res = context.prisma.ghrepoes();
+    return res;
+  },
+  
+  githubRepo: (parent, args, context) => {
+    const { id } = args;
+    const res = context.prisma.ghrepo({ id });
+    return res;
+  },
+  
+  
+  me: (parent, args, context) => {
+    console.log('%O', context.user);
+  
+    return context.user;
+  },
+  persons: (_, args, context) => {
+    const res = context.prisma.persons();
+    return res;
+  },
+  
+  person: (_, args, context) => {
+    const { where } = args;
+    const res = context.prisma.person(where);
+    return res;
+  }
+}// end query
+
+
+
+// const projects = (parent, args, context) => {
+//   const res = context.prisma.projects();
+//   return res;
+// };
+
+
+   
 
 // /**
 //  * @param Nil _parent
@@ -54,16 +192,7 @@ const project = (_, args, context) => {
 //   return res;
 // };
 
-const persons = (_, args, context) => {
-  const res = context.prisma.persons();
-  return res;
-};
 
-const person = (_, args, context) => {
-  const { where } = args;
-  const res = context.prisma.person(where);
-  return res;
-};
 
 // const note = (_, args, context) => {
 //   const { id } = args;
@@ -82,133 +211,29 @@ const person = (_, args, context) => {
 //   return resPublic;
 // };
 
-const codeClimateSnapshot = async (parent, args, context) => {
-  const CodeClimateConnection = context.dataSources.codeClimateAPI;
-  try {
-    const { slug } = args;
-    const res = await CodeClimateConnection.getRepobyGHSlug(slug);
-    const link = res.data[0].links.self;
-    const repoId = res.data[0].id;
-    const snapShot =
-      res.data[0].relationships.latest_default_branch_snapshot.data.id;
-    const name = res.data[0].attributes.human_name;
 
-    let snapShotResponse = await CodeClimateConnection.getSnapshot(
-      repoId,
-      snapShot,
-    );
-    snapShotResponse = { ...snapShotResponse, name, link };
-    return snapShotResponse;
-  } catch (e) {
-    console.log(e);
-    throw new Error(e);
-  }
-};
 
-const githubReposForOrg = async (parent, args, context) => {
-  const { search, org } = args;
-  let name;
-  if (!org) {
-    const grams = await context.prisma.programs();
-    name = grams[0].name;
-  } else name = org;
-  const dynamicQuery = `${search} org:${name}`;
-  const GithubConnection = context.dataSources.gitHubAPI;
-  try {
-    const res = await GithubConnection.getReposByOrg(dynamicQuery);
-    return res;
-  } catch (e) {
-    console.log(e);
-    throw new Error(e);
-  }
-};
+// module.exports = {
+//   programs,
+//   // products,
+//   projects,
+//   project,
+//   // statuses,
+//   // status,
+//   // labels,
+//   // label,
+//   persons,
+//   person,
+//   // note,
+//   // notes,
+//   codeClimateSnapshot,
+//   githubRepo,
+//   githubRepos,
+//   githubReposForOrg,
+//   sparkyBoy,
+//   sparkyDate,
+//   githubPulse,
+//   me,
+// };
 
-const sparkyBoy = async (parent, args, context) => {
-  const { owner, name } = args;
-  const GithubConnection = context.dataSources.gitHubAPI;
-  try {
-    const res = await GithubConnection.getSparkline(owner, name);
-    return res;
-  } catch (err) {
-    console.log(err);
-    throw new Error(err);
-  }
-};
-
-const sparkyDate = async (parent, args, context) => {
-  const { owner, name, until } = args;
-  const GithubConnection = context.dataSources.gitHubAPI;
-  try {
-    const res = await GithubConnection.getSparkline(owner, name, until);
-    return res;
-  } catch (err) {
-    console.log(err);
-    throw new Error(err);
-  }
-};
-
-/**
- * @param { import('../context').ApolloContext } context
- * @returns any
- */
-const githubPulse = async (_, args, context) => {
-  context.logger.debug('Query.gitHubPulse: %O', args);
-
-  const { owner, name } = args;
-
-  /** @type {import("../datasources/GitHubAPI")} */
-  const GithubConnection = context.dataSources.gitHubAPI;
-  try {
-    return await GithubConnection.getPulse(owner, name);
-  } catch (error) {
-    context.logger.error(
-      'Error executing GithubConnection.getPulse\n%O',
-      error,
-    );
-    throw new Error(error);
-  }
-};
-
-const githubRepos = (parent, args, context) => {
-  const res = context.prisma.ghrepoes();
-  return res;
-};
-
-const githubRepo = (parent, args, context) => {
-  const { id } = args;
-  const res = context.prisma.ghrepo({ id });
-  return res;
-};
-
-/**
- * @param { import('../context').ApolloContext } context
- * @returns { import('../context').User }
- */
-const me = (parent, args, context) => {
-  console.log('%O', context.user);
-
-  return context.user;
-};
-
-module.exports = {
-  programs,
-  products,
-  projects,
-  project,
-  // statuses,
-  // status,
-  // labels,
-  // label,
-  persons,
-  person,
-  // note,
-  // notes,
-  codeClimateSnapshot,
-  githubRepo,
-  githubRepos,
-  githubReposForOrg,
-  sparkyBoy,
-  sparkyDate,
-  githubPulse,
-  me,
-};
+module.exports= {Query};

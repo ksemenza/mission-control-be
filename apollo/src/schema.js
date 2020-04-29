@@ -14,9 +14,10 @@ const typeDefs = gql`
     persons: [Person!]!
     person(email: String!): Person!
     products: [Product!]!
+    product(id: ID!, filter: String): Product!
     programs: [Program!]!
     projects: [Project!]!
-    project(id: ID!): Project!
+    project(id: ID!, filter: String): Project!
     notes(orderBy: NoteOrderByInput, privatePerm: Boolean): [Note!]!
     note(id: ID!): Note!
     roles: [Role!]!
