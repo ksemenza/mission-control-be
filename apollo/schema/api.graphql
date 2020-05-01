@@ -9,7 +9,7 @@ extend type Query {
   sparkyDate(owner: String!, name: String!, until: String!): [Sparkline!]!
 
   me: User
-} # end query
+}
 
 type CodeClimateSnapshot {
   id: ID!
