@@ -131,8 +131,8 @@ const typeDefs = gql`
     id: ID!
     name: String!
     email: String!
-    role: Role!
-    manages: [Project!]!
+    role: Role
+    manages: [Project]
     notes: [Note]
     team: Project
     avatar: String

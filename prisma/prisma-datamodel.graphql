@@ -166,7 +166,6 @@ type Note {
 
 type Person {
   id: ID! @id
-  oktaID: String
   name: String!
   email: String! @unique
   avatar: String

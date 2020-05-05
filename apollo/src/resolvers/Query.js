@@ -56,12 +56,14 @@ const project = (_, args, context) => {
 
 const persons = (_, args, context) => {
   const res = context.prisma.persons();
+  console.log('***LOOK HERE PERSONS***', context.user.name);
   return res;
 };
 
 const person = (_, args, context) => {
   const { where } = args;
   const res = context.prisma.person(where);
+  console.log('***LOOK HERE PERSON***');
   return res;
 };
 

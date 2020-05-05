@@ -146,9 +146,11 @@ const createProject = (parent, args, context) => {
 // Create a new person, takes two strings and a role enum
 // NOTE: email field is @unique, for enum see type defs
 const createPerson = (parent, args, context) => {
-  const { name, email } = args;
-  console.log('***LOOK HERE***', args);
-  const person = context.prisma.createPerson({ name, email });
+  const person = context.prisma.createPerson({
+    name: context.user.name,
+    email: context.user.email,
+  });
+  console.log('***LOOK HERE CREATE PERSON***', context.user.name);
 
   return person;
 };
