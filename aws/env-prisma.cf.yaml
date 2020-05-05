@@ -15,7 +15,6 @@ Parameters:
   PrismaServicePort:
     Type: Number
     Description: The port that the Prisma service will be listening on
-    Default: 8000
 
 Resources:
   PrismaManagementAPISecret:
@@ -47,8 +46,8 @@ Resources:
       RequiresCompatibilities:
         - FARGATE
       Family: !Sub ${ApplicationName}-${EnvironmentName}-prisma
-      Cpu: "256"
-      Memory: "512"
+      Cpu: "1024"
+      Memory: "2048"
       ExecutionRoleArn:
         Fn::ImportValue: !Sub ${ApplicationName}-ECSTaskExecutionRole
       TaskRoleArn:
@@ -152,11 +151,23 @@ Outputs:
     Export:
       Name: !Sub ${ApplicationName}-${EnvironmentName}-PrismaServiceArn
 
+  PrismaManagementAPISecretDELETE:
+    Description: The ARN of the secret used to access the Prisma management API
+    Value: !Ref PrismaManagementAPISecret
+    Export:
+      Name: !Sub ${ApplicationName}-${EnvironmentName}-PrismaManagementAPISecret
+
   PrismaManagementAPISecretArn:
     Description: The ARN of the secret used to access the Prisma management API
     Value: !Ref PrismaManagementAPISecret
     Export:
       Name: !Sub ${ApplicationName}-${EnvironmentName}-PrismaManagementAPISecretArn
+
+  PrismaServiceAPISecretDELETE:
+    Description: The ARN of the secret used to access the Prisma service API
+    Value: !Ref PrismaServiceAPISecret
+    Export:
+      Name: !Sub ${ApplicationName}-${EnvironmentName}-PrismaServiceAPISecret
 
   PrismaServiceAPISecretArn:
     Description: The ARN of the secret used to access the Prisma service API

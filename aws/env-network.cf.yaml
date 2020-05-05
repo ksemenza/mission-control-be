@@ -105,7 +105,7 @@ Resources:
       HealthCheckPath: /.well-known/apollo/server-health
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 5
-      HealthyThresholdCount: 5
+      HealthyThresholdCount: 2
       Port: 80
       Protocol: HTTP
       UnhealthyThresholdCount: 2

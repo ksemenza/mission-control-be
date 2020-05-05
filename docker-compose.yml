@@ -3,7 +3,7 @@ version: '2.4'
 services:
   # The Apollo service
   apollo:
-    image: ${APOLLO_CONTAINER_IMAGE}
+    image: lambdaschoollabs/beerthoven-apollo:latest
     build:
       context: ./apollo
       dockerfile: Dockerfile
@@ -22,25 +22,13 @@ services:
       # The path for the Apollo GraphQL API
       GRAPHQL_API_PATH: ${APOLLO_API_PATH:-/api/graphql}
 
-      JWKS_URI: ${JWKS_URI:?You must specify JWKS_URI}
-      JWT_ISSUER: ${JWT_ISSUER:?You must specify JWT_ISSUER}
+      JWKS_URI: ${APOLLO_JWKS_URI}
+      JWT_ISSUER: ${APOLLO_JWT_ISSUER}
 
       PRISMA_ENDPOINT: http://prisma:${PRISMA_LISTEN_PORT:-7000}
       PRISMA_SECRET: ${PRISMA_SECRET:?You must specify PRISMA_SECRET}
 
       LOG_LEVEL: ${LOG_LEVEL:-debug}
-
-      # OAUTH_TOKEN_ENDPOINT: ${OAUTH_TOKEN_ENDPOINT:?You must specify OAUTH_TOKEN_ENDPOINT}
-      # OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID:?You must specify OAUTH_CLIENT_ID}
-
-      # == Mission Control Specific Environment Variables ==
-      SENDGRID_API_KEY: ${SENDGRID_API_KEY:?You must specify SENDGRID_API_KEY}
-
-      CODE_CLIMATE_API: ${CODE_CLIMATE_API:?You must specify CODE_CLIMATE_API}
-      CODE_CLIMATE_TOKEN: ${CODE_CLIMATE_TOKEN:?You must specify CODE_CLIMATE_TOKEN}
-
-      GIT_HUB_API: ${GIT_HUB_API:?You must specify GIT_HUB_API}
-      GIT_HUB_TOKEN: ${GIT_HUB_TOKEN:?You must specify GIT_HUB_TOKEN}
 
   # The Prisma service
   prisma:

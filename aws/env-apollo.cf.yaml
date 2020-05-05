@@ -24,23 +24,15 @@ Parameters:
   ApolloServicePort:
     Type: Number
     Description: The port that the Apollo service will be listening on
-    Default: 8000
 
   PrismaServicePort:
     Type: Number
     Description: The port that the Prisma service will be listening on
-    Default: 8000
 
   JwksUri:
     Type: String
 
   JwtIssuer:
-    Type: String
-
-  CodeClimateAPI:
-    Type: String
-
-  GitHubApi:
     Type: String
 
   LogLevel:
@@ -64,8 +56,8 @@ Resources:
       RequiresCompatibilities:
         - FARGATE
       Family: !Sub ${ApplicationName}-${EnvironmentName}-apollo
-      Cpu: "256"
-      Memory: "512"
+      Cpu: '1024'
+      Memory: '2048'
       ExecutionRoleArn:
         Fn::ImportValue: !Sub ${ApplicationName}-ECSTaskExecutionRole
       TaskRoleArn:
@@ -90,21 +82,9 @@ Resources:
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: apollo
           Secrets:
-            # TODO: This should _not_ be hardcoded!
-            - Name: SENDGRID_API_KEY
-              ValueFrom: 'arn:aws:secretsmanager:us-east-1:576275871595:secret:sendgrid-api-key-mission-control-production-JuvQDV'
-
-            # TODO: This should _not_ be hardcoded!
-            - Name: CODE_CLIMATE_TOKEN
-              ValueFrom: 'arn:aws:secretsmanager:us-east-1:576275871595:secret:code-climate-token-mission-control-production-l33xKi'
-
-            # TODO: This should _not_ be hardcoded!
-            - Name: GIT_HUB_TOKEN
-              ValueFrom: 'arn:aws:secretsmanager:us-east-1:576275871595:secret:github-token-mission-control-production-ceeAMJ'
-
-            # TODO: This should _not_ be hardcoded!
             - Name: PRISMA_SECRET
-              ValueFrom: 'arn:aws:secretsmanager:us-east-1:576275871595:secret:prisma-service-api-secret-mission-control-production-3jzIWu'
+              ValueFrom:
+                Fn::ImportValue: !Sub ${ApplicationName}-${EnvironmentName}-PrismaServiceAPISecretArn
           Environment:
             - Name: PORT
               Value: !Ref ApolloServicePort
@@ -125,12 +105,6 @@ Resources:
             - Name: JWT_ISSUER
               Value: !Ref JwtIssuer
 
-            - Name: CODE_CLIMATE_API
-              Value: !Ref CodeClimateAPI
-
-            - Name: GIT_HUB_API
-              Value: !Ref GitHubApi
-
             - Name: LOG_LEVEL
               Value: !Ref LogLevel
 
@@ -142,9 +116,6 @@ Resources:
       Cluster:
         Fn::ImportValue: !Sub ${ApplicationName}-${EnvironmentName}-ECSCluster
       DesiredCount: 1
-      DeploymentConfiguration:
-        MaximumPercent: 100
-        MinimumHealthyPercent: 0
       LoadBalancers:
         - ContainerName: apollo
           ContainerPort: !Ref ApolloServicePort

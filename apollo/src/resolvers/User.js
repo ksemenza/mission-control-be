@@ -1,38 +1,17 @@
 // @ts-check
+'use strict'
 
 /**
- * @param { import('../context').ApolloContext } context
- * @returns { import('../generated/prisma-client').FragmentableArray<import('../generated/prisma-client').Project> }
+ * @param { import('../generated/prisma-client').User } parent
+ * @param {{ prisma: import('../generated/prisma-client').Prisma }} context
+ * @returns { Promise }
  */
-const projects = context => {
-  const {
-    user: { email },
-    prisma,
-  } = context;
+module.exports.profile = async (parent, _args, context) => {
+  console.log('User.profile.parent: %j', parent)
 
-  const where = {
-    OR: [
-      { sectionLead: { email } },
-      { teamLead: { email } },
-      { projectManagers_some: { email } },
-      { team_some: { email_in: email } },
-    ],
-  };
-  const res = prisma.projects({ where });
+  const profile = await context.prisma.user({ id: parent.id }).profile()
 
-  return res;
-};
+  console.log('User.profile: %j', profile)
 
-// /**
-//  * @param { import('../context').ApolloContext } context
-//  * @returns { import('../generated/prisma-client').FragmentableArray<import('../generated/prisma-client').Project> }
-//  */
-// const role = context => {
-//   const res = context.prisma.user({ id: parent.id }).role();
-//   return res;
-// };
-
-module.exports = {
-  projects,
-  // role,
-};
+  return profile
+}

@@ -16,8 +16,6 @@ WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules/
 
-RUN ls node_modules
-
 COPY ./schema/ ./schema
 COPY ./src/ ./src
 
