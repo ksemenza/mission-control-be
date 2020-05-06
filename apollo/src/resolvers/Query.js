@@ -56,7 +56,7 @@ const project = (_, args, context) => {
 
 const persons = (_, args, context) => {
   const res = context.prisma.persons();
-  console.log('***LOOK HERE PERSONS***', context.user.name);
+  console.log('***LOOK HERE PERSONS***', context.user);
   return res;
 };
 

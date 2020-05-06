@@ -166,8 +166,8 @@ const context = async ({ req }) => {
   // logger.debug('Creating User using decoded JWT: %O', decodedJWT)
   const user = new User(
     decodedJWT.sub,
-    decodedJWT.email,
     decodedJWT.name,
+    decodedJWT.email,
     decodedJWT.groups,
   );
 

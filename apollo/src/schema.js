@@ -129,6 +129,7 @@ const typeDefs = gql`
 
   type Person {
     id: ID!
+    oktaId: String!
     name: String!
     email: String!
     role: Role

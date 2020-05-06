@@ -149,10 +149,19 @@ const createPerson = (parent, args, context) => {
   const person = context.prisma.createPerson({
     name: context.user.name,
     email: context.user.email,
+    oktaId: context.user.sub,
   });
-  console.log('***LOOK HERE CREATE PERSON***', context.user.name);
+  console.log('***LOOK HERE CREATE PERSON***', context.user);
 
   return person;
+};
+
+// Delete an existing person, takes id and deletes person
+const deletePerson = (parent, args, context) => {
+  const { id } = args;
+
+  const deletedPerson = context.prisma.deletePerson({ id });
+  return deletedPerson;
 };
 
 // Create a new Note , takes strings for topic, content/int for rating
