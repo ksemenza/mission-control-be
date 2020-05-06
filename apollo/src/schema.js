@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server');
-
+ 
 const typeDefs = gql`
   type Query {
     CodeClimateSnapshot(slug: String!): CodeClimateSnapshot
