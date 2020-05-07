@@ -43,6 +43,7 @@ const typeDefs = gql`
     disconnectSelectedLabel(id: ID!, selected: ID!, columnId: String): Label!
     deleteStatus(id: ID!): Status!
     createPerson(name: String!, email: String!): Person!
+    updatePerson(id: ID!, name: String!, email: String!): Person!
     addProjectMember(id: ID!, email: String!): Person!
     createNote(
       topic: String!

@@ -19,6 +19,7 @@
 # import Query.person from "generated/prisma.graphql"
 # import Query.persons from "generated/prisma.graphql"
 # import Mutation.createPerson from "generated/prisma.graphql"
+# import Mutation.updatePerson from "generated/prisma.graphql"
 
 # import Query.note from "generated/prisma.graphql"
 # import Query.notes from "generated/prisma.graphql"

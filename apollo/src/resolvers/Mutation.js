@@ -156,10 +156,21 @@ const createPerson = (parent, args, context) => {
   return person;
 };
 
+const updatePerson = (parent, args, context) => {
+  const { name, email, id } = args;
+  console.log('***LOOK HERE***', args);
+  const person = context.prisma.updatePerson({
+    data: { name, email },
+    where: { id },
+  });
+  return person;
+};
+
 // Delete an existing person, takes id and deletes person
 const deletePerson = (parent, args, context) => {
   const { id } = args;
 
+  console.log('***LOOK HERE***', args);
   const deletedPerson = context.prisma.deletePerson({ id });
   return deletedPerson;
 };
@@ -295,6 +306,7 @@ module.exports = {
   // updateLabel,
   // createStatus,
   createPerson,
+  updatePerson,
   // createNote,
   // deleteNote,
   // updateNote,
