@@ -1,5 +1,5 @@
-const { gql } = require('apollo-server');
- 
+const { gql } = require("apollo-server");
+
 const typeDefs = gql`
   type Query {
     CodeClimateSnapshot(slug: String!): CodeClimateSnapshot
@@ -23,6 +23,10 @@ const typeDefs = gql`
     role(id: ID!): Role!
     SparkyBoy(owner: String!, name: String!): [Sparkline!]!
     SparkyDate(owner: String!, name: String!, until: String!): [Sparkline!]!
+
+  #KS Tag Query 
+    tags:[Tag]
+    tag(id:ID!):Tag
   }
 
   type Mutation { 
@@ -73,6 +77,23 @@ const typeDefs = gql`
       ownerId: String!
     ): GHRepo!
     deleteGithubRepo(id: ID!): GHRepo!
+
+    
+#KS Tag Mutation
+        
+createTag(
+  id:ID!
+  name:String!): Tag!
+updateTag(
+  id:ID!
+  name:String!
+  isUsed: Boolean!):Tag!
+deleteTag(
+id:String!):Tag!
+#KS Disconnects filter tag INCOMPLETE
+#disconnectSelectedTag(id: ID!, selectedTag: ID!, connectedItemId: String): Tag!
+}
+
   }
 
   type CodeClimateSnapshot {
