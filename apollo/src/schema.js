@@ -24,12 +24,12 @@ const typeDefs = gql`
     SparkyBoy(owner: String!, name: String!): [Sparkline!]!
     SparkyDate(owner: String!, name: String!, until: String!): [Sparkline!]!
 
-  #KS Tag Query 
-    tags:[Tag]
+  #KS Tag Query
+    tags:[Tag!]
     tag(id:ID!):Tag
   }
 
-  type Mutation { 
+  type Mutation {
     createProgram(name: String!): Program!
     createProduct(name: String!, id: ID!): Product!
     createProject(name: String!, id: ID!): Project!
@@ -78,9 +78,9 @@ const typeDefs = gql`
     ): GHRepo!
     deleteGithubRepo(id: ID!): GHRepo!
 
-    
+
 #KS Tag Mutation
-        
+
 createTag(
   id:ID!
   name:String!): Tag!
@@ -249,7 +249,7 @@ id:String!):Tag!
     isUsed: Boolean!
   }
 
-#Lab23-T1 Search 
+#Lab23-T1 Search
 enum ProjectsOrderByInput {
   name_ASC
   name_DESC
@@ -262,7 +262,7 @@ enum ProjectsOrderByInput {
 
 type Feed {
   id:ID! @id
-  filter: String! 
+  filter: String!
   projects: [Project!]!
   count: Int!
 }

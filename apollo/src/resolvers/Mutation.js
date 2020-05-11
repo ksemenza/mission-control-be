@@ -276,12 +276,13 @@ const updateProject = (_, args, context) => {
 //LAB23-T1 CREATE-TAG
 const createTag = (parent, args, context) => {
   const { id, name, isUsed } = args
-  const tag = context.prisma.createTag({ id, name, isUsed })
+  const tag = context.prisma.createTag(args.data)
   .catch((e => {
     console.error(e.message)
   }),
   console.log(createTag ? `Tag ${name} was added` : `Tag ${name} was not added`)
   )
+  console.log(tag);
   return tag
 }
 

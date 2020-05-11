@@ -1,11 +1,11 @@
 const name = (parent, _, context) => {
-    const res = context.prisma.name({ id: parent.id }).name()
+    const res = context.prisma.tag({ id: parent.id }).name()
       return res
     }
 
 
     const isUsed = (parent, _, context) => {
-        const res = context.prisma.isUsed({id: parent.id}).isUsed()
+        const res = context.prisma.tag({id: parent.id}).isUsed()
         return res
     }
 
