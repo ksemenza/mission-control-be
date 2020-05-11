@@ -275,7 +275,7 @@ const updateProject = (_, args, context) => {
 
 //LAB23-T1 CREATE-TAG
 const createTag = (parent, args, context) => {
-  const { id, name, isUsed } = args
+  const { id, name, isUsed } = args.data
   const tag = context.prisma.createTag(args.data)
   .catch((e => {
     console.error(e.message)
@@ -289,11 +289,11 @@ const createTag = (parent, args, context) => {
 //LAB23-T1 DELETE-TAG
 const deleteTag = async (parent, args, context) => {
   const { id } = args
-  const deletedTag = await context.prisma.deleteTag({ id })
+  const deletedTag = await context.prisma.deleteTag(args.where)
   .catch((e => {
     console.error(e.message)
   }),
-  console.log(deleteTag ? `Tag ${name} deleted` : `Tag ${name} was not`)
+  //console.log(deleteTag ? `Tag ${name} deleted` : `Tag ${name} was not`)
   )
   return deletedTag
 }
