@@ -273,7 +273,7 @@ const updateProject = (_, args, context) => {
 };
 
 
-//LAB23-T1 CREATE-TAG
+//LAB23-T1 CREATE-TAG, UPDATED 5/11/20
 const createTag = (parent, args, context) => {
   const { id, name, isUsed } = args.data
   const tag = context.prisma.createTag(args.data)
@@ -299,16 +299,17 @@ const deleteTag = async (parent, args, context) => {
 }
 
 //LAB23-T1 UPDATE-TAG
-const updateTag = async (parent, args, context) => {
+const updateTag = (parent, args, context) => {
   const { id, name, isUsed } = args
-  const updateTag = await context.prisma.updateTag({
-    data: { name, isUsed },
-    where: { id },
+  console.log(args)
+  const updateTag = context.prisma.updateTag({
+    data: args.data,
+    where: args.where,
   })
   .catch((e => {
     console.error(e.message)
   }),
-  console.log(updateTag ? `Tag ${name} was updated to ${data.name}` : `Tag ${name} was not updated`)
+  //console.log(updateTag ? `Tag ${name} was updated to ${data.name}` : `Tag ${name} was not updated`)
   )
   return updateTag
 }
