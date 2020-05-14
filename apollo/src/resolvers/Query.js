@@ -211,6 +211,7 @@ const tag = (parent, args, context) => {
   return res
 }
 
+
 //LAB23-T1-Search component added
 
 const feed = async (_, args, context) => {
@@ -274,4 +275,5 @@ module.exports = {
   tags,
   tag,
   feed
+
 };

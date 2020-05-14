@@ -66,6 +66,11 @@ const status = (parent, _, context) => {
   return context.prisma.project({ id: parent.id }).status();
 };
 
+//NEW TAG TO DECLARE Project tags
+const tags = (parent, args, context) => {
+  return context.prisma.project({ id: parent.id }).tags();
+};
+
 module.exports = {
   product,
   assignments,
@@ -73,4 +78,5 @@ module.exports = {
   // projectManagers,
   notes,
   status,
+  tags
 };

@@ -31,8 +31,10 @@ type Product {
 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-}
 
+
+}
+#TODO BEGINNING OF Project Type
 # A Project is a group of people doing work related to a specific product for a period of time
 type Project {
   id: ID! @id
@@ -53,9 +55,14 @@ type Project {
   # Captures project specific notes
   notes: [Note!]! @relation(name: "NotesByProject")
 
+  
+  #TODO New tag value in project to indicate array
+  tags:[Tag!]! @relation(name:"TagByProject")
+
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
+
 
 # A ProjectStatusElement record maintains the current value of a status element to a status category for the project
 # Remember, overall project status is composed of zero or more ProjectStatusElements. These objects represent the
@@ -79,7 +86,6 @@ type ProjectStatusElement {
 type StatusCategory {
   id: ID! @id
   name: String!
-
   # The set of possible values for this status category
   valueOptions: [StatusValueOption!]!
 
@@ -144,6 +150,8 @@ enum LetterGrade {
   F
 }
 
+
+#TODO NOTE TYPE
 type Note {
   id: ID! @id
   topic: String!
@@ -162,23 +170,22 @@ type Note {
   updatedAt: DateTime! @updatedAt
 }
 
+#TODO Notes relation
+#TODO  All of the notes authored by this person
+#TODO Person -> notes:[Note!] @relation(name:"NotesByAuthor")
+#TODO Person -> attended:[Note!] @relation(name:"NoteAttendee")
 type Person {
   id: ID! @id
   name: String!
   email: String! @unique
   avatar: String
-
   # role: Role!
 
-  # All of the notes authored by this person
   notes: [Note!]! @relation(name: "NotesByAuthor")
-
   # All of the meetings attended by this person
   attended: [Note!]! @relation(name: "NoteAttendee")
-
   # All of the project roles assigned to this person
   projectRoleAssignments: [ProjectRoleAssignment!]! @relation(name: "ProjectRoleAssignmentsByPerson")
-
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -217,6 +224,12 @@ name: String! @unique
 isUsed:Boolean! @default(value: false)
 
 #Creates connection to projects, programs, and labels
+
+#TODO TEST if it is connecting values with projects tags
+  project: [Project!] @relation(name: "TagByProject")
+    
+
+
 #project:Project @relation(name:"TagByProject")
 #program:Program @relation(name:"TagByProgram")
 #projectStatusElement:ProjectStatusElement @relation(name:"TagByStatus")
@@ -225,7 +238,7 @@ isUsed:Boolean! @default(value: false)
 type Feed {
 id:ID! @id
   filter: String! 
-  projects: [Project!]!
+  projects: [Project]
   count: Int!
 }
 

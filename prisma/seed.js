@@ -260,6 +260,8 @@ const seed = async () => {
     const project = projects[i];
 
     // Add some notes
+
+    //TODO KS Tag for project var needs to be placed in seeding
     for (let j = Math.floor(Math.random() * 5); j > 0; j -= 1) {
       projectNotes.push(
         await prisma.createNote({

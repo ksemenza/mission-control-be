@@ -24,9 +24,13 @@ const typeDefs = gql`
     SparkyBoy(owner: String!, name: String!): [Sparkline!]!
     SparkyDate(owner: String!, name: String!, until: String!): [Sparkline!]!
 
-  #KS Tag Query
-    tags:[Tag!]
+#TODO KS Tag Query
+    tags:[Tag]
     tag(id:ID!):Tag
+
+#TODO KS TagbyProject Queries save 
+#  tagsByProject : [TagByProject]
+#  tagByProject(id:ID!):TagByProject
   }
 
   type Mutation {
@@ -34,6 +38,20 @@ const typeDefs = gql`
     createProduct(name: String!, id: ID!): Product!
     createProject(name: String!, id: ID!): Project!
     # createLabel(name: String!, color: String!, id: ID!): Label!
+
+#TODO KS create new Tag to Project list
+    createTagByProject(
+      name: String!
+      projects: [String]
+      id: ID!
+    ): TagByProject!
+
+#TODO add project 
+    addTagByProject(id: ID!, name: String!): Project!
+
+#TODO KS Updated Tag by project
+    updateTagByProject(id: ID!, name: String, display: Boolean): TagByProject!
+
     createStatus(
       name: String!
       projects: [String]
@@ -47,6 +65,7 @@ const typeDefs = gql`
     disconnectSelectedLabel(id: ID!, selected: ID!, columnId: String): Label!
     deleteStatus(id: ID!): Status!
     createPerson(name: String!, email: String!): Person!
+
     addProjectMember(id: ID!, email: String!): Person!
     createNote(
       topic: String!
@@ -68,6 +87,7 @@ const typeDefs = gql`
     ): Note!
     deleteNote(id: ID!): Note!
     addStatusToProject(id: ID!, name: String!): Project!
+
     addLabelToStatus(id: ID!, name: String!): Status!
     createGithubRepo(
       repoId: String!
@@ -83,7 +103,7 @@ const typeDefs = gql`
 
 createTag(
   id:ID!
-  name:String!): Tag!
+  name:String): Tag
 updateTag(
   id:ID!
   name:String!
@@ -174,11 +194,15 @@ id:String!):Tag!
     product: Product!
     projectManagers: [Person!]!
     team: [Person!]!
+    tagByProject:[TagByProject]
     notes(orderBy: NoteOrderByInput, privatePerm: Boolean): [Note]
     createdAt: String!
     updatedAt: String!
     projectStatus: [Status]
     projectActive: Boolean
+    
+#TODO Adding Project Tag value 
+    projectTag:[TagByProject]
   }
 
   type Pulse {
@@ -240,6 +264,15 @@ id:String!):Tag!
     projects: [Project!]
     program: Program
     display: Boolean!
+  }
+
+#TODO TagByProject type
+  type TagByProject {
+    id:ID!
+    name:String!
+    projects:[Project]
+    tags:[Tag]
+    isAssigned:Boolean!
   }
 
   #LAB23-T1 TAG  Needs Order by input
