@@ -68,6 +68,11 @@ const status = (parent, _, context) => {
 
 /**
  * @param { import('../context').ApolloContext } context
+ * @returns { import('../generated/prisma-client').FragmentableArray<import('../generated/prisma-client').Tag> }
+ */
+
+/**
+ * @param { import('../context').ApolloContext } context
  * @returns { import('../generated/prisma-client').FragmentableArray<import('../generated/prisma-client').ProjectTagElement> }
  */
 const tags = (parent, args, context) => {

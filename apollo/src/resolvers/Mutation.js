@@ -276,6 +276,7 @@ const updateProject = (_, args, context) => {
 //LAB23-T1 CREATE-TAG, UPDATED 5/11/20
 const createTag = (parent, args, context) => {
   const { id, name, isUsed } = args.data
+  console.log(args.data)
   const tag = context.prisma.createTag(args.data)
   .catch((e => {
     console.error(e.message)
@@ -284,6 +285,14 @@ const createTag = (parent, args, context) => {
   )
   console.log(tag);
   return tag
+}
+
+
+const createProjectTagElement = (parent, args, context) => {
+    const {project, tag} = args.data
+    const projectTagElement = context.prisma.createProjectTagElement(args.data)
+    console.log(projectTagElement)
+    return projectTagElement
 }
 
 //LAB23-T1 DELETE-TAG
@@ -321,6 +330,7 @@ module.exports = {
   createProgram,
   createProduct,
   createProject,
+  createProjectTagElement,
   updateProject,
   // createLabel,
   // updateLabel,

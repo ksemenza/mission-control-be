@@ -12,6 +12,7 @@ const Product = require('./Product');
 const Project = require('./Project');
 const ProjectRoleAssignment = require('./ProjectRoleAssignment');
 const ProjectStatusElement = require('./ProjectStatusElement');
+const ProjectTagElement = require('./ProjectTagElement');
 const User = require('./User');
 const Person = require('./Person');
 const Note = require('./Note');
@@ -28,6 +29,7 @@ const resolvers = {
   Project,
   ProjectRoleAssignment,
   ProjectStatusElement,
+  ProjectTagElement,
   User,
   Person,
   Note,

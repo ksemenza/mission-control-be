@@ -24,11 +24,11 @@ const typeDefs = gql`
     SparkyBoy(owner: String!, name: String!): [Sparkline!]!
     SparkyDate(owner: String!, name: String!, until: String!): [Sparkline!]!
 
-#TODO KS Tag Query
-    tags:[Tag]
+#TODO KS - HS Tag Query, ProjectTagElement Query
+    tags:[Tag!]!
     tag(id:ID!):Tag
 
-#TODO KS TagbyProject Queries save 
+#TODO KS TagbyProject Queries save
 #  tagsByProject : [TagByProject]
 #  tagByProject(id:ID!):TagByProject
   }
@@ -38,6 +38,9 @@ const typeDefs = gql`
     createProduct(name: String!, id: ID!): Product!
     createProject(name: String!, id: ID!): Project!
     # createLabel(name: String!, color: String!, id: ID!): Label!
+    createProjectTagElement(
+        id: ID!): ProjectTagElement!
+
 
 #TODO KS create new Tag to Project list
     createTagByProject(
@@ -46,7 +49,7 @@ const typeDefs = gql`
       id: ID!
     ): TagByProject!
 
-#TODO add project 
+#TODO add project
     addTagByProject(id: ID!, name: String!): Project!
 
 #TODO KS Updated Tag by project
@@ -103,7 +106,9 @@ const typeDefs = gql`
 
 createTag(
   id:ID!
-  name:String): Tag
+  name:String)
+  // Adding projects section to create tag
+  projects: [Project!]: Tag
 updateTag(
   id:ID!
   name:String!
@@ -194,15 +199,15 @@ id:String!):Tag!
     product: Product!
     projectManagers: [Person!]!
     team: [Person!]!
-    tagByProject:[TagByProject]
+    tags: [ProjectTagElement!]!
     notes(orderBy: NoteOrderByInput, privatePerm: Boolean): [Note]
     createdAt: String!
     updatedAt: String!
     projectStatus: [Status]
     projectActive: Boolean
-    
-#TODO Adding Project Tag value 
-    projectTag:[TagByProject]
+
+#TODO Adding Project Tag value
+    #projectTags:[TagOnProject]
   }
 
   type Pulse {
@@ -274,12 +279,18 @@ id:String!):Tag!
     tags:[Tag]
     isAssigned:Boolean!
   }
+  type ProjectTagElement {
+    id:ID!
+    projects:[Project!]!
+    tag:[Tag!]!
+  }
 
   #LAB23-T1 TAG  Needs Order by input
   type Tag {
     id: ID!
     name: String!
     isUsed: Boolean!
+    projects: [Project!]!
   }
 
 #Lab23-T1 Search

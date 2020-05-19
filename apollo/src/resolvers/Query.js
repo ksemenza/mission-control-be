@@ -22,8 +22,9 @@ const projects = (parent, args, context) => {
  * @param { import('../context').ApolloContext } context
  * @returns { import('../generated/prisma-client').ProjectNullablePromise }
  */
-const project = (_, args, context) => {
+const project = (parent, args, context) => {
   const { where } = args;
+  console.log(args.where.id)
   const res = context.prisma.project(where);
   return res;
 };
@@ -211,6 +212,23 @@ const tag = (parent, args, context) => {
   return res
 }
 
+
+/*
+/** IMPORTS WILL MAYBE FOUND IS generated/prisma-client and add to apollo.graphql
+ *
+ * @param { import('../context').ApolloContext } context
+ * @returns { import('../generated/prisma-client').ProjectTagElement }
+*/
+/*
+ *
+ *
+
+const projectTagElements = (parent, args, context) => {
+   // const {where} = args
+    const res = context.prisma.projectTagElements()
+    console.log(args)
+    return res
+}*/
 
 //LAB23-T1-Search component added
 
