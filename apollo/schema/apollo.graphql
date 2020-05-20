@@ -39,6 +39,7 @@
 # import Mutation.deleteTag from "generated/prisma.graphql"
 #
 # import Mutation.createProjectTagElement from "generated/prisma.graphql"
+# import Mutation.deleteProjectTagElement from "generated/prisma.graphql"
 #
 
 # import Query.* from "api.graphql"

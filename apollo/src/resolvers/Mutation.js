@@ -307,6 +307,19 @@ const deleteTag = async (parent, args, context) => {
   return deletedTag
 }
 
+const deleteProjectTagElement = (parent, args, context) => {
+    const { id } = args
+    const projectTagElement = context.prisma.deleteProjectTagElement(args.where)
+      .catch((e => {
+        console.error(e.message)
+      }))
+
+    console.log(projectTagElement)
+    return projectTagElement
+}
+
+
+
 //LAB23-T1 UPDATE-TAG
 const updateTag = (parent, args, context) => {
   const { id, name, isUsed } = args
@@ -331,6 +344,7 @@ module.exports = {
   createProduct,
   createProject,
   createProjectTagElement,
+  deleteProjectTagElement,
   updateProject,
   // createLabel,
   // updateLabel,

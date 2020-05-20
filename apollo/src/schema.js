@@ -40,6 +40,7 @@ const typeDefs = gql`
     # createLabel(name: String!, color: String!, id: ID!): Label!
     createProjectTagElement(
         id: ID!): ProjectTagElement!
+    deleteProjectTagElement(id: ID!): ProjectTagElement!
 
 
 #TODO KS create new Tag to Project list
