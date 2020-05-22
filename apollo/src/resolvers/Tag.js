@@ -9,8 +9,8 @@ const name = (parent, _, context) => {
         return res
     }
 
-    const projects = (parent, _, context) => {
-        const res = context.prisma.tag({id: parent.id}).projects()
+    const projects = ( parent, args, context) => {
+      const res = context.prisma.tag({id: parent.id}).projects()
     }
 
   module.exports = {

@@ -18,7 +18,7 @@ const count = (_, args, context) => {
       return res
     }
     const filter = (_, args, context) => {
-    const res =  context.prisma.projects({
+    const res = context.prisma.projects({
       where: {
         OR: [
             { name_contains: args.filter },
