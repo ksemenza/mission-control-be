@@ -239,7 +239,7 @@ isUsed:Boolean! @default(value: false)
 #Creates connection to projects, programs, and labels
 
 #TODO TEST if it is connecting values with projects tags
-projects: [Project]! @relation(name: "TagsOnProject")
+projects: [Project!]! @relation(name: "TagsOnProject")
     
 
 
