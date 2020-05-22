@@ -28,11 +28,6 @@ const typeDefs = gql`
     tags:[Tag!]!
     tag(id:ID!):Tag
 
-#TODO KS TagbyProject Queries save
-#  tagsByProject : [TagByProject]
-#  tagByProject(id:ID!):TagByProject
-  }
-
   type Mutation {
     createProgram(name: String!): Program!
     createProduct(name: String!, id: ID!): Product!
@@ -43,18 +38,7 @@ const typeDefs = gql`
     deleteProjectTagElement(id: ID!): ProjectTagElement!
 
 
-#TODO KS create new Tag to Project list
-    createTagByProject(
-      name: String!
-      projects: [String]
-      id: ID!
-    ): TagByProject!
 
-#TODO add project
-    addTagByProject(id: ID!, name: String!): Project!
-
-#TODO KS Updated Tag by project
-    updateTagByProject(id: ID!, name: String, display: Boolean): TagByProject!
 
     createStatus(
       name: String!
@@ -272,14 +256,6 @@ id:String!):Tag!
     display: Boolean!
   }
 
-#TODO TagByProject type
-  type TagByProject {
-    id:ID!
-    name:String!
-    projects:[Project]
-    tags:[Tag]
-    isAssigned:Boolean!
-  }
   type ProjectTagElement {
     id:ID!
     projects:[Project!]!

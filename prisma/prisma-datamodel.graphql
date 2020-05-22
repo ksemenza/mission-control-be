@@ -164,7 +164,6 @@ enum LetterGrade {
 }
 
 
-#TODO NOTE TYPE
 type Note {
   id: ID! @id
   topic: String!
@@ -183,10 +182,6 @@ type Note {
   updatedAt: DateTime! @updatedAt
 }
 
-#TODO Notes relation
-#TODO  All of the notes authored by this person
-#TODO Person -> notes:[Note!] @relation(name:"NotesByAuthor")
-#TODO Person -> attended:[Note!] @relation(name:"NoteAttendee")
 type Person {
   id: ID! @id
   name: String!
@@ -241,11 +236,6 @@ isUsed:Boolean! @default(value: false)
 #TODO TEST if it is connecting values with projects tags
 projects: [Project]! @relation(name: "TagsOnProject")
     
-
-
-#project:Project @relation(name:"TagByProject")
-#program:Program @relation(name:"TagByProgram")
-#projectStatusElement:ProjectStatusElement @relation(name:"TagByStatus")
 }
 
 type Feed {
