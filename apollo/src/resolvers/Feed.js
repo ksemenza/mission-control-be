@@ -4,7 +4,7 @@ const count = (_, args, context) => {
       .ProjectsConnection({
         where: {
           OR: [
-            { name_contains: args.filter.toLowerCase() },
+            { name_contains: args.filter },
             { product_contains: args.filter },
             { status_contains: args.filter },
             { active_contains: args.filter },
@@ -18,10 +18,10 @@ const count = (_, args, context) => {
       return res
     }
     const filter = (_, args, context) => {
-    const res =  context.prisma.projects({
+    const res = context.prisma.projects({
       where: {
         OR: [
-            { name_contains: args.filter.toLowerCase() },
+            { name_contains: args.filter },
             { product_contains: args.filter },
             { status_contains: args.filter },
             { active_contains: args.filter },
