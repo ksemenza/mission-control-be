@@ -51,6 +51,7 @@ type Project {
   updatedAt: DateTime! @updatedAt
 }
 
+
 #* A ProjectStatusElement record maintains the current value of a status element to a status category for the project
 #* Remember, overall project status is composed of zero or more ProjectStatusElements. These objects represent the
 #*   state of one element of the overall project status.
@@ -191,11 +192,7 @@ type Role {
 # The current value of this tag element; may be null
 # tag: Tag! @relation(name: "TagElement")}
 
-type ProjectConnection {
-cursor: String!
-hasMore: Boolean!
-projects:[Project]!
-}
+
 
 type ProjectTagElement {
   id: ID! @id
@@ -203,6 +200,7 @@ type ProjectTagElement {
   tag: Tag @unique @relation(link: INLINE, name: "TagElement")
 
 }
+
 
 #Tag type with relation to ProjectTagElement to connect it to Projects
 #LAB23-T1 Tag and Connect Map

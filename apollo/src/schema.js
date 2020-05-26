@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server");
+const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   type Query {
@@ -18,10 +18,7 @@ const typeDefs = gql`
 
     # TODO UNCOMMENT IF PAGNATION DOES NOT WORK
     projects(filter:String): [Project!]!
-    projects(filter:String
-              pageSize:Int 
-  # Add cursor here will only return results_after_this cursor
-              after:String ): ProjectConnection!
+
 
     project(id: ID!): Project!
     notes(orderBy: NoteOrderByInput, privatePerm: Boolean): [Note!]!
@@ -33,9 +30,7 @@ const typeDefs = gql`
     tags:[Tag!]!
     tag(id:ID!):Tag
 
-  #<==== Pagnation Project List =====>
-
-  
+ 
   }
 
   type Mutation {
@@ -251,7 +246,7 @@ deleteProjectTagElement(id:ID!): ProjectTagElement
     display: Boolean!
   }
 
-  
+
   type ProjectTagElement {
     id: ID! @id
     project: Project! @relation(link:INLINE, name: "TagsByProject")
@@ -270,12 +265,7 @@ deleteProjectTagElement(id:ID!): ProjectTagElement
         
     }
       
-    enum ProjectTagObj {
-      PROJECT_OBJ,
-      TAG_OBJ
-      
-      }
-      
+
 
 `;
 
