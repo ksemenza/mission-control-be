@@ -19,39 +19,29 @@ type Program {
 type Product {
   id: ID! @id
   name: String!
-
   program: Program! @relation(name: "ProductsByProgram")
-
-  # Is the product currently active?
+  #* Is the product currently active?
   active: Boolean @default(value: false)
-
   projects: [Project!]! @relation(name: "ProjectsByProduct")
-
   githubRepos: [GithubRepo!]! @relation(name: "GitHubReposByProduct")
-
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
 #TODO BEGINNING OF Project Type
-# A Project is a group of people doing work related to a specific product for a period of time
+#* A Project is a group of people doing work related to a specific product for a period of time
 type Project {
   id: ID! @id
   name: String!
-
-  # The product associated with this project
+  #* The product associated with this project
   product: Product! @relation(name: "ProjectsByProduct")
-
-  # The project status is composed of zero or more ProjectStatus records
+  #* The project status is composed of zero or more ProjectStatus records
   status: [ProjectStatusElement!]! @relation(name: "ProjectStatusesByProject")
-
-  # Is the project currently active?
+  #* Is the project currently active?
   active: Boolean @default(value: false)
 
-  # People are assigned roles on a project, this links people to a project _through_ a role
-  assignments: [ProjectRoleAssignment!]!
-    @relation(name: "ProjectRoleAssignmentsByProject")
-
-  # Captures project specific notes
+  #* People are assigned roles on a project, this links people to a project _through_ a role
+  assignments: [ProjectRoleAssignment!]! @relation(name: "ProjectRoleAssignmentsByProject")
+  #* Captures project specific notes
   notes: [Note!]! @relation(name: "NotesByProject")
   tags: [ProjectTagElement]! @relation(name: "TagsByProject")
 
@@ -61,19 +51,19 @@ type Project {
   updatedAt: DateTime! @updatedAt
 }
 
-# A ProjectStatusElement record maintains the current value of a status element to a status category for the project
-# Remember, overall project status is composed of zero or more ProjectStatusElements. These objects represent the
-#   state of one element of the overall project status.
+#* A ProjectStatusElement record maintains the current value of a status element to a status category for the project
+#* Remember, overall project status is composed of zero or more ProjectStatusElements. These objects represent the
+#*   state of one element of the overall project status.
 type ProjectStatusElement {
   id: ID! @id
 
   # The project this status element is part of
   project: Project! @relation(name: "ProjectStatusesByProject")
 
-  # The category of this status element
+  #* The category of this status element
   category: StatusCategory!
 
-  # The current value of this status element; may be null
+  #* The current value of this status element; may be null
   value: StatusValueOption
 
   createdAt: DateTime! @createdAt
@@ -96,10 +86,10 @@ type StatusCategory {
 type StatusValueOption {
   id: ID! @id
 
-  # A label for the value
+  #* A label for the value
   label: String!
 
-  # A color for the value
+  #* A color for the value
   color: String!
 
   createdAt: DateTime! @createdAt
@@ -114,14 +104,11 @@ type GithubRepo {
 
   repoId: String!
 
-  # A URL that leads to the details of the repo
+  #* A URL that leads to the details of the repo
   url: String!
-  # ownerId: String!
-
+  #* ownerId: String!
   product: Product! @relation(name: "GitHubReposByProduct")
-
-  grade: GithubRepoGrade
-    @relation(name: "GitHubRepoGradesByGitHubRepo", link: "INLINE")
+  grade: GithubRepoGrade @relation(name: "GitHubRepoGradesByGitHubRepo", link: "INLINE")
 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -129,15 +116,11 @@ type GithubRepo {
 
 type GithubRepoGrade {
   id: ID! @id
-
   githubRepo: GithubRepo! @relation(name: "GitHubRepoGradesByGitHubRepo")
-
-  # The current value of the grade
+  #* The current value of the grade
   value: LetterGrade
-
-  # A URL that leads to the details of the grade
+  #* A URL that leads to the details of the grade
   url: String!
-
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -154,16 +137,11 @@ type Note {
   id: ID! @id
   topic: String!
   content: String!
-
   private: Boolean! @default(value: false)
-
   author: Person! @relation(name: "NotesByAuthor")
-  # attendedBy: [Person] @relation(name: "MeetingAttendee")
-
+  #* attendedBy: [Person] @relation(name: "MeetingAttendee")
   project: Project! @relation(name: "NotesByProject")
-
   rating: Int!
-
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -178,8 +156,7 @@ type Person {
   # All of the meetings attended by this person
   attended: [Note!]! @relation(name: "NoteAttendee")
   # All of the project roles assigned to this person
-  projectRoleAssignments: [ProjectRoleAssignment!]!
-    @relation(name: "ProjectRoleAssignmentsByPerson")
+  projectRoleAssignments: [ProjectRoleAssignment!]! @relation(name: "ProjectRoleAssignmentsByPerson")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -214,11 +191,17 @@ type Role {
 # The current value of this tag element; may be null
 # tag: Tag! @relation(name: "TagElement")}
 
+type ProjectConnection {
+cursor: String!
+hasMore: Boolean!
+projects:[Project]!
+}
+
 type ProjectTagElement {
   id: ID! @id
   project: Project @unique @relation(link: INLINE, name: "TagsByProject")
   tag: Tag @unique @relation(link: INLINE, name: "TagElement")
-  ProjectTagElementObj: [TAG_OBJ] @scalarList(strategy: RELATION)
+
 }
 
 #Tag type with relation to ProjectTagElement to connect it to Projects
@@ -232,7 +215,3 @@ type Tag {
   projects: [ProjectTagElement] @relation(name: "TagElement")
 }
 
-enum ProjectTagElementObj {
-  PROJECT_OBJ
-  TAG_OBJ
-}

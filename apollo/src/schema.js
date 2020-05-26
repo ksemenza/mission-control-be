@@ -15,7 +15,14 @@ const typeDefs = gql`
     person(email: String!): Person!
     products: [Product!]!
     programs: [Program!]!
+
+    # TODO UNCOMMENT IF PAGNATION DOES NOT WORK
     projects(filter:String): [Project!]!
+    projects(filter:String
+              pageSize:Int 
+  # Add cursor here will only return results_after_this cursor
+              after:String ): ProjectConnection!
+
     project(id: ID!): Project!
     notes(orderBy: NoteOrderByInput, privatePerm: Boolean): [Note!]!
     note(id: ID!): Note!
@@ -23,9 +30,12 @@ const typeDefs = gql`
     role(id: ID!): Role!
     SparkyBoy(owner: String!, name: String!): [Sparkline!]!
     SparkyDate(owner: String!, name: String!, until: String!): [Sparkline!]!
-
     tags:[Tag!]!
     tag(id:ID!):Tag
+
+  #<==== Pagnation Project List =====>
+
+  
   }
 
   type Mutation {
