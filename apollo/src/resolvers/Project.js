@@ -84,5 +84,5 @@ module.exports = {
   // projectManagers,
   notes,
   status,
-  tags,
+  tags
 };

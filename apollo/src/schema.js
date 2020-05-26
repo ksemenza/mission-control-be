@@ -24,9 +24,9 @@ const typeDefs = gql`
     SparkyBoy(owner: String!, name: String!): [Sparkline!]!
     SparkyDate(owner: String!, name: String!, until: String!): [Sparkline!]!
 
-#TODO KS - HS Tag Query, ProjectTagElement Query
     tags:[Tag!]!
     tag(id:ID!):Tag
+  }
 
   type Mutation {
     createProgram(name: String!): Program!
@@ -87,21 +87,24 @@ const typeDefs = gql`
     deleteGithubRepo(id: ID!): GHRepo!
 
 
-#KS Tag Mutation
+#TODO DELETE OR UNCOMMENT Tag Mutation
 
-createTag(
-  id:ID!
-  name:String)
-  // Adding projects section to create tag
-  projects: [Project!]: Tag
-updateTag(
-  id:ID!
-  name:String!
-  isUsed: Boolean!):Tag!
-deleteTag(
-id:String!):Tag!
-#KS Disconnects filter tag INCOMPLETE
-#disconnectSelectedTag(id: ID!, selectedTag: ID!, connectedItemId: String): Tag!
+# TAG MUTATIONS
+
+ createTag(name: String!, tagId: ID!): Tag
+
+  updateTag(tagId: ID!, name: String!, isUsed:Boolean): Tag!
+  deleteTag(tagId:ID!):Tag!
+
+
+#TODO UNCOMMENT PROJECT TAG ELEMENT MUTATIONS
+createProjectTagElement(id:ID!): ProjectTagElement
+deleteProjectTagElement(id:ID!): ProjectTagElement
+
+# TODO Connects Projects toTags
+ addTag(projectId:[ID]):ProjectTagElementWhereInput!
+ removeTag(projectId:[ID]!):ProjectTagElementWhereInput!
+
 }
 
   }
@@ -184,15 +187,12 @@ id:String!):Tag!
     product: Product!
     projectManagers: [Person!]!
     team: [Person!]!
-    tags: [ProjectTagElement!]!
+    tags: [ProjectTagElement]! @relation(name:"TagsByProject") 
     notes(orderBy: NoteOrderByInput, privatePerm: Boolean): [Note]
     createdAt: String!
     updatedAt: String!
     projectStatus: [Status]
     projectActive: Boolean
-
-#TODO Adding Project Tag value
-    #projectTags:[TagOnProject]
   }
 
   type Pulse {
@@ -230,21 +230,6 @@ id:String!):Tag!
     role: Role!
   }
 
-  enum NoteOrderByInput {
-    id_ASC
-    id_DESC
-    topic_ASC
-    topic_DESC
-    content_ASC
-    content_DESC
-    rating_ASC
-    rating_DESC
-    createdAt_ASC
-    createdAt_DESC
-    updatedAt_ASC
-    updatedAt_DESC
-  }
-
   type Status {
     id: ID!
     createdAt: String!
@@ -256,38 +241,31 @@ id:String!):Tag!
     display: Boolean!
   }
 
+  
   type ProjectTagElement {
-    id:ID!
-    projects:[Project!]!
-    tag:[Tag!]!
-  }
-
-  #LAB23-T1 TAG  Needs Order by input
+    id: ID! @id
+    project: Project! @relation(link:INLINE, name: "TagsByProject")
+    tag: Tag! @relation(link:INLINE , name: "TagElement")
+  
+    }
+    
+  
   type Tag {
-    id: ID!
-    name: String!
-    isUsed: Boolean!
-    projects: [Project!]!
-  }
-
-#Lab23-T1 Search
-enum ProjectsOrderByInput {
-  name_ASC
-  name_DESC
-  product
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-}'
-
-type Feed {
-  id:ID! @id
-  filter: String!
-  projects: [Project!]!
-  count: Int!
-}
-
+    id: ID! @id
+    name: String! @unique
+    createdAt: DateTime! @createdAt
+    updatedAt: DateTime! @updatedAt
+    isUsed: Boolean! @default(value: false)
+    projects:[ProjectTagElement] @relation(name:"TagElement") 
+        
+    }
+      
+    enum ProjectTagObj {
+      PROJECT_OBJ,
+      TAG_OBJ
+      
+      }
+      
 
 `;
 

@@ -54,7 +54,7 @@ type Project {
 
   # Captures project specific notes
   notes: [Note!]! @relation(name: "NotesByProject")
-  tags: [ProjectTagElement]! @relation(name: "ProjectTagsByProject")
+  tags: [ProjectTagElement]! @relation(name: "TagsByProject")
   
   #TODO New tag value in project to indicate array
 
@@ -84,16 +84,7 @@ type ProjectStatusElement {
 
 # Following logic of status element code
 
-type ProjectTagElement {
-  id: ID! @id
-  # The project this tag element is part of
-  project: Project! @relation(name: "ProjectTagsByProject")
 
-  # The current value of this tag element; may be null
-  tag: Tag! @relation(name: "TagElement")
-## createdAt: DateTime! @createdAt
-##  updatedAt: DateTime! @updatedAt
-}
 
 
 type StatusCategory {
@@ -223,25 +214,43 @@ type Role {
   updatedAt: DateTime! @updatedAt
 }
 
-#LAB23-T1 Tag and Connect Map
-type Tag {
-id: ID! @id
-createdAt: DateTime! @createdAt
-updatedAt: DateTime! @updatedAt
-name: String! @unique
-isUsed:Boolean! @default(value: false)
+#  CHANGED NAMING AND FORMAT
+#type ProjectTagElement {
+#  id: ID! @id
+# The project this tag element is part of
+#  project: Project! @relation(name: "ProjectTagsByProject")
+# The current value of this tag element; may be null
+ # tag: Tag! @relation(name: "TagElement")}
 
-#Creates connection to projects, programs, and labels
 
-#TODO TEST if it is connecting values with projects tags
-projects: [Project!]! @relation(name: "TagsOnProject")
-    
-}
+  type ProjectTagElement {
+  id: ID! @id
+  project: Project @unique @relation(link:INLINE, name: "TagsByProject")
+  tag: Tag @unique @relation(link:INLINE , name: "TagElement")
 
-type Feed {
-id:ID! @id
-  filter: String! 
-  projects: [Project]
-  count: Int!
-}
+  }
+  
+
+
+#Tag type with relation to ProjectTagElement to connect it to Projects 
+#LAB23-T1 Tag and Connect Map 
+  type Tag {
+  id: ID! @id
+  name: String! @unique
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  isUsed: Boolean! @default(value: false)
+  projects: [ProjectTagElement] @relation(name:"TagElement")
+      
+  }
+  
+      enum ProjectTagObj {
+      PROJECT_OBJ,
+      TAG_OBJ
+      
+      }
+      
+
+
+
 

@@ -219,19 +219,24 @@ const tag = (parent, args, context) => {
  * @param { import('../context').ApolloContext } context
  * @returns { import('../generated/prisma-client').ProjectTagElement }
 */
+
 /*
- *
- *
+const projectTagElement = (parent, args, context) => {
+  const { where } = args
+  const res = context.prisma.projectTagElement(where)
+  return res
+}
+
 
 const projectTagElements = (parent, args, context) => {
    // const {where} = args
     const res = context.prisma.projectTagElements()
     console.log(args)
     return res
-}*/
-
+}
+*/
 //LAB23-T1-Search component added
-
+/*
 const feed = async (_, args, context) => {
   context.logger.debug('Query.feed: %O', args)
   const { filter, count } = args;
@@ -264,7 +269,7 @@ const feed = async (_, args, context) => {
   }
 };
 
-
+*/
 
 
 
@@ -292,6 +297,7 @@ module.exports = {
   me,
   tags,
   tag,
-  feed
+  // projectTagElement,
+  // projectTagElements
 
 };
