@@ -31,8 +31,6 @@ type Product {
 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-
-
 }
 #TODO BEGINNING OF Project Type
 # A Project is a group of people doing work related to a specific product for a period of time
@@ -50,18 +48,18 @@ type Project {
   active: Boolean @default(value: false)
 
   # People are assigned roles on a project, this links people to a project _through_ a role
-  assignments: [ProjectRoleAssignment!]! @relation(name: "ProjectRoleAssignmentsByProject")
+  assignments: [ProjectRoleAssignment!]!
+    @relation(name: "ProjectRoleAssignmentsByProject")
 
   # Captures project specific notes
   notes: [Note!]! @relation(name: "NotesByProject")
   tags: [ProjectTagElement]! @relation(name: "TagsByProject")
-  
+
   #TODO New tag value in project to indicate array
 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
-
 
 # A ProjectStatusElement record maintains the current value of a status element to a status category for the project
 # Remember, overall project status is composed of zero or more ProjectStatusElements. These objects represent the
@@ -83,9 +81,6 @@ type ProjectStatusElement {
 }
 
 # Following logic of status element code
-
-
-
 
 type StatusCategory {
   id: ID! @id
@@ -125,7 +120,8 @@ type GithubRepo {
 
   product: Product! @relation(name: "GitHubReposByProduct")
 
-  grade: GithubRepoGrade @relation(name: "GitHubRepoGradesByGitHubRepo", link: "INLINE")
+  grade: GithubRepoGrade
+    @relation(name: "GitHubRepoGradesByGitHubRepo", link: "INLINE")
 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -154,7 +150,6 @@ enum LetterGrade {
   F
 }
 
-
 type Note {
   id: ID! @id
   topic: String!
@@ -179,12 +174,12 @@ type Person {
   email: String! @unique
   avatar: String
   # role: Role!
-
   notes: [Note!]! @relation(name: "NotesByAuthor")
   # All of the meetings attended by this person
   attended: [Note!]! @relation(name: "NoteAttendee")
   # All of the project roles assigned to this person
-  projectRoleAssignments: [ProjectRoleAssignment!]! @relation(name: "ProjectRoleAssignmentsByPerson")
+  projectRoleAssignments: [ProjectRoleAssignment!]!
+    @relation(name: "ProjectRoleAssignmentsByPerson")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -192,13 +187,10 @@ type Person {
 # Maps a person to a project by giving them a specific role on the project
 type ProjectRoleAssignment {
   id: ID! @id
-
   # The person
   person: Person! @relation(name: "ProjectRoleAssignmentsByPerson")
-
   # The project
   project: Project! @relation(name: "ProjectRoleAssignmentsByProject")
-
   # The person's role on the project
   role: Role!
 }
@@ -220,37 +212,27 @@ type Role {
 # The project this tag element is part of
 #  project: Project! @relation(name: "ProjectTagsByProject")
 # The current value of this tag element; may be null
- # tag: Tag! @relation(name: "TagElement")}
+# tag: Tag! @relation(name: "TagElement")}
 
-
-  type ProjectTagElement {
+type ProjectTagElement {
   id: ID! @id
-  project: Project @unique @relation(link:INLINE, name: "TagsByProject")
-  tag: Tag @unique @relation(link:INLINE , name: "TagElement")
+  project: Project @unique @relation(link: INLINE, name: "TagsByProject")
+  tag: Tag @unique @relation(link: INLINE, name: "TagElement")
+  ProjectTagElementObj: [TAG_OBJ] @scalarList(strategy: RELATION)
+}
 
-  }
-  
-
-
-#Tag type with relation to ProjectTagElement to connect it to Projects 
-#LAB23-T1 Tag and Connect Map 
-  type Tag {
+#Tag type with relation to ProjectTagElement to connect it to Projects
+#LAB23-T1 Tag and Connect Map
+type Tag {
   id: ID! @id
   name: String! @unique
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   isUsed: Boolean! @default(value: false)
-  projects: [ProjectTagElement] @relation(name:"TagElement")
-      
-  }
-  
-      enum ProjectTagObj {
-      PROJECT_OBJ,
-      TAG_OBJ
-      
-      }
-      
+  projects: [ProjectTagElement] @relation(name: "TagElement")
+}
 
-
-
-
+enum ProjectTagElementObj {
+  PROJECT_OBJ
+  TAG_OBJ
+}
