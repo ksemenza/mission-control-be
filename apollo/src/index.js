@@ -1,7 +1,5 @@
 // @ts-check
 'use strict'
-
-// Apollo dependencies
 const { importSchema } = require('graphql-import')
 const { ApolloServer, gql } = require('apollo-server')
 

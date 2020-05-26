@@ -30,7 +30,6 @@ const typeDefs = gql`
     tags:[Tag!]!
     tag(id:ID!):Tag
 
- 
   }
 
   type Mutation {
@@ -41,8 +40,6 @@ const typeDefs = gql`
     createProjectTagElement(
         id: ID!): ProjectTagElement!
     deleteProjectTagElement(id: ID!): ProjectTagElement!
-
-
 
 
     createStatus(
