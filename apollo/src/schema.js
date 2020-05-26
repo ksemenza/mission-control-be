@@ -258,7 +258,7 @@ deleteProjectTagElement(id:ID!): ProjectTagElement
     createdAt: DateTime! @createdAt
     updatedAt: DateTime! @updatedAt
     isUsed: Boolean! @default(value: false)
-    projects:[ProjectTagElement] @relation(name:"TagElement") 
+    projects:[ProjectTagElement]! @relation(name:"TagElement") 
         
     }
       

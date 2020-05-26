@@ -196,8 +196,8 @@ type Role {
 
 type ProjectTagElement {
   id: ID! @id
-  project: Project @unique @relation(link: INLINE, name: "TagsByProject")
-  tag: Tag @unique @relation(link: INLINE, name: "TagElement")
+  project: Project! @unique @relation(link: INLINE, name: "TagsByProject")
+  tag: Tag! @unique @relation(link: INLINE, name: "TagElement")
 
 }
 
